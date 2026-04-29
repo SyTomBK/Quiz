@@ -1,0 +1,12 @@
+version: '3.4'
+
+services:
+  samplesvc:
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Production
+    ports:
+      - "5050:80"
+      #- "5051:443"
+    volumes:
+      - ${APPDATA}/Microsoft/UserSecrets:/home/app/.microsoft/usersecrets:ro
+      - ${APPDATA}/ASP.NET/Https:/home/app/.aspnet/https:ro

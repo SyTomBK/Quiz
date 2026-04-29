@@ -1,0 +1,18 @@
+version: '3.4'
+
+services:
+  samplesvc:
+    image: ${DOCKER_REGISTRY-}samplesvc
+    build:
+      context: .
+      dockerfile: SampleSvc/Dockerfile
+    labels:
+       service: SampleService
+    environment:
+      - TZ=Asia/Ho_Chi_Minh
+      #- TZ=Asia/Istanbul
+      - ASPNETCORE_HTTP_PORTS=80
+      # or
+      #- ASPNETCORE_URLS=http://0.0.0.0:80
+      #- ASPNETCORE_HTTPS_PORTS=443
+    command: dotnet SampleSvc.dll

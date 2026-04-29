@@ -1,0 +1,12 @@
+version: "3"
+services:
+  samplesvc:
+    # image: nexus.eztek.net/sample-svc
+    # build:
+    #   context: .
+    #   dockerfile: ./SampleSvc/Dockerfile
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+    ports:
+      - '8080:80'
+    command: dotnet SampleSvc.dll /mig /seed

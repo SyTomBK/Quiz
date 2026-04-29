@@ -1,0 +1,1134 @@
+syntax = "proto3";
+
+import "google/protobuf/wrappers.proto";
+import "google/protobuf/empty.proto";
+import "google/protobuf/timestamp.proto";
+option csharp_namespace = "Quiz.Protos";
+
+package QuizV2Svc;
+
+service QuizV2Grpc {
+  // Campaigns
+  rpc CreateCampaign(CreatedCampaignRequest) returns (CampaignMiniResponse);
+  rpc GetCampaignDetail(GetCampaignDetailRequest) returns (CampaignResponse);
+  rpc UpdateCampaign(UpdatedCampaignRequest) returns (CampaignMiniResponse);
+  rpc GetCampaignList(GetCampaignListRequest) returns (PagedCampaignMiniResponse);
+  
+  // Campaigns
+
+  //CampainQuizSetting
+  rpc UpdateCampaignQuizSetting(UpdatedCampaignQuizSettingRequest) returns (CampaignQuizSettingMiniResponse);
+  rpc GetCampaignQuizSettingDetail(GetCampaignQuizSettingDetailRequest) returns (CampaignQuizSettingResponseProto);
+  rpc CreateCampaignQuizSetting(CreateCampaignQuizSettingProto) returns (CampaignQuizSettingMiniResponse);
+  rpc DeleteCampaignQuizSetting(DeleteCampaignQuizSettingRequest) returns (google.protobuf.Empty);
+   //CampainQuizSetting
+
+  //Quiz
+  rpc CreateQuiz(CreatedQuizRequest) returns (QuizMiniResponse);
+  rpc UpdateQuiz(UpdatedQuizRequest) returns (QuizMiniResponse);
+  rpc GetQuizList(GetQuizListRequest) returns (PagedQuizMiniResponse);
+  rpc GetQuizDetail(GetQuizDetailRequest) returns (QuizResponse);
+  rpc CloneQuiz(CloneQuizRequest) returns (QuizMiniResponse);
+  rpc DeepCopyQuiz(DeepCopyQuizRequest) returns (QuizMiniResponse);
+  rpc GetQuizInCampaignDetail(GetQuizInCampaignDetailRequest) returns (GetQuizInCampaignDetailResponse);
+  //Quiz
+
+  //Question
+   rpc UpdateQuestion(UpdatedQuestionRequest) returns (QuestionSuccessResponse);
+   rpc CreateQuizQuestion(CreatedQuizQuestionRequest) returns (QuestionSuccessResponse);
+   rpc GetQuestionDetail(GetQuestionDetailRequest) returns (QuestionMiniResponse);
+   rpc DeletedQuestion(DeletedQuestionRequest) returns (google.protobuf.Empty);
+  //Question
+
+  //Dimension
+  rpc CreateDimension(CreatedNewDimensionRequest) returns (DimensionMiniResponse);
+  rpc UpdateDimension(UpdatedQuizDimensionRequest) returns (DimensionMiniResponse);
+  rpc SyncDimension(SyncDimensionRequest) returns (google.protobuf.Empty);
+  rpc GetDimensionDetail(GetDimensionDetailRequest) returns (DimensionResponse);
+  rpc GetQuizDimensionList(GetQuizDimensionListRequest) returns (PagedDimensionMiniResponse);
+  //Dimension
+
+   //QuizAttempt
+  rpc CreateQuizAttempt(CreateQuizAttemptRequest) returns (QuizAttemptMiniResponse);
+  rpc UpdateQuizAttempt(UpdateQuizAttemptRequest) returns (QuizAttemptMiniResponse);
+  rpc GetQuizAttemptQuery(GetQuizAttemptQueryRequest) returns (QuizAttemptResponse);
+  //QuizAttempt
+
+    //QuizResult
+  rpc SubmitQuizAttempt(SubmitQuizAttemptRequest) returns (QuizResultMiniResponse);
+  rpc GetQuizResultDetail(GetQuizResultDetailRequest) returns (QuizResultResponse);
+  rpc GetQuizResultList(GetQuizResultListRequest) returns (PagedCampaignQuizResultResponse);
+  //QuizResult
+
+  // Lead
+  rpc UpdateLead(UpdateLeadRequest) returns (LeadMiniResponse);
+  rpc GetLeadDetail(GetLeadDetailRequest) returns (LeadResponse);
+  rpc GetLeadList(GetLeadListRequest) returns (PagedLeadMiniResponse);
+  
+  // Lead Interaction & Scoring
+  rpc LogInteraction(LogInteractionRequest) returns (google.protobuf.Empty);
+  rpc GetLeadEngagement(GetLeadEngagementRequest) returns (LeadEngagementResponse);
+  rpc UpdateScoringRule(UpdateScoringRuleRequest) returns (ScoringRuleResponse);
+  rpc GetScoringRules(GetScoringRulesRequest) returns (ScoringRulesResponse);
+  rpc GetLeadInteractions(GetLeadInteractionsRequest) returns (PagedInteractionLogMiniResponse);
+  // Lead Interaction & Scoring
+
+  // Recommendation
+  rpc GetRecommendations(GetRecommendationsRequest) returns (RecommendationsResponse);
+  rpc GetRecommendationList(GetRecommendationListRequest) returns (PagedRecommendationMiniResponse);
+  rpc GetRecommendationDetail(GetRecommendationDetailRequest) returns (RecommendationProto);
+  rpc CreateRecommendation(CreateRecommendationRequest) returns (RecommendationMiniResponse);
+  rpc UpdateRecommendation(UpdateRecommendationRequest) returns (RecommendationMiniResponse);
+  rpc DeleteRecommendation(DeleteRecommendationRequest) returns (google.protobuf.Empty);
+
+  // ScoringRule
+  rpc CreateScoringRule(CreatedScoringRuleRequest) returns (ScoringRuleMiniResponse);
+  rpc UpdatedScoringRule(UpdatedScoringRuleRequest) returns (ScoringRuleMiniResponse);
+  rpc GetScoringRuleDetail(GetScoringRuleDetailRequest) returns (ScoringRuleDetailResponse);
+  rpc DeleteScoringRule(DeleteScoringRuleRequest) returns (google.protobuf.Empty);
+  rpc GetScoringRuleList(GetScoringRuleListRequest) returns (PagedScoringRuleMiniResponse);
+}
+
+// Campaigns
+
+message CreatedCampaignRequest {
+  string name = 1;
+  optional string description = 2;
+  string address = 3;
+  optional string image = 4;
+  CampaignStatusProto status = 5;
+  string tenant = 6;
+  repeated CampaignQuizSettingProto quiz_settings = 7;
+  optional google.protobuf.Timestamp start_time = 8;
+  optional google.protobuf.Timestamp end_time = 9;
+}
+
+message CampaignMiniResponse {
+  string id = 1;
+  string code = 2;
+  string name = 3;
+  string address = 4;
+  CampaignStatusProto status = 5;
+  optional google.protobuf.Timestamp start_time = 6;
+  optional google.protobuf.Timestamp end_time = 7;
+  google.protobuf.Timestamp created_at = 8;
+}
+
+message GetCampaignDetailRequest {
+  string id = 1;
+}
+
+message CampaignResponse {
+  string id = 1;
+  string code = 2;
+  string name = 3;
+  optional string description = 4;
+  string address = 5;
+  optional string image = 6;
+  CampaignStatusProto status = 7;
+  string tenant = 8;
+  optional google.protobuf.Timestamp start_time = 9;
+  optional google.protobuf.Timestamp end_time = 10;
+  repeated CampaignQuizSettingResponseProto quiz_settings = 11;
+  google.protobuf.Timestamp created_at = 12;
+  string created_by = 13;
+  optional google.protobuf.Timestamp last_modified_at = 14;
+  optional string last_modified_by = 15;
+}
+
+message UpdatedCampaignRequest {
+  string id = 1;
+  string name = 2;
+  optional string description = 3;
+  string address = 4;
+  optional string image = 5;
+  CampaignStatusProto status = 6;
+  string tenant = 7;
+  optional google.protobuf.Timestamp start_time = 8;
+  optional google.protobuf.Timestamp end_time = 9;
+  repeated string quiz_setting_deteted_ids = 10;
+  repeated CampaignQuizSettingProto quiz_setting_createds = 11;
+  repeated UpdatedCampaignQuizSetting quiz_setting_updateds = 12;
+}
+
+message GetCampaignListRequest {
+  string code = 1;
+  string name = 2;
+  optional CampaignStatusProto status = 6;
+  string tenant = 7;
+  optional google.protobuf.Timestamp from_date = 8;
+  optional google.protobuf.Timestamp to_date = 9;
+  int32 page = 10;
+  int32 page_size = 11;
+}
+
+
+message PagedCampaignMiniResponse {
+  repeated CampaignMiniResponse data = 1;
+  int32 total_count = 2;
+  int32 page = 3;
+  int32 page_size = 4;
+}
+
+
+// Campaigns
+
+// CampaignQuizSetting
+message CampaignQuizSettingResponseProto {
+  string id = 1;
+  string quiz_id = 2;
+  bool is_active = 3;
+  int32 max_attempts = 4;
+  LeadCollectionPolicyProto lead_collection_policy = 5;
+  CheckpointConfigProto checkpoint_config = 6;
+}
+
+message GetCampaignQuizSettingDetailRequest {
+  string id = 1;
+}
+
+message DeleteCampaignQuizSettingRequest {
+  string id = 1;
+}
+
+message CampaignQuizSettingProto {
+  string quiz_id = 1;
+  bool is_active = 2;
+  int32 max_attempts = 3;
+  LeadCollectionPolicyProto lead_collection_policy = 4;
+  CheckpointConfigProto checkpoint_config = 5;
+}
+
+message CreateCampaignQuizSettingProto {
+  string campaign_id = 1;
+  string quiz_id = 2;
+  bool is_active = 3;
+  int32 max_attempts = 4;
+  LeadCollectionPolicyProto lead_collection_policy = 5;
+  CheckpointConfigProto checkpoint_config = 6;
+}
+
+message UpdatedCampaignQuizSetting {
+  string id = 1;
+  string quiz_id = 2;
+  bool is_active = 3;
+  int32 max_attempts = 4;
+  LeadCollectionPolicyProto lead_collection_policy = 5;
+  CheckpointConfigProto checkpoint_config = 6;
+}
+
+message LeadCollectionPolicyProto {
+  repeated LeadFieldProto required_fields = 1;
+}
+
+message CheckpointConfigProto {
+  repeated QuizCheckpointProto checkpoints = 1;
+}
+
+message QuizCheckpointProto {
+  string key = 1;
+  CheckpointTriggerProto trigger = 2;
+  CheckpointContentProto content = 3;
+}
+
+message CheckpointTriggerProto {
+  CheckpointTriggerTypeProto checkpoint_trigger_type = 1;
+  int32 question_number = 2;
+  optional int32 interval = 3;
+  optional double progress_percent = 4;
+}
+
+message CheckpointContentProto {
+  CheckpointContentTypeProto checkpoint_content_type = 1;
+  optional PromoContentProto promo = 2;
+  optional GamificationContentProto gamification = 3;
+  optional ProgressiveFormContentProto progressive_form = 4;
+  optional GateContentProto gate = 5;
+}
+
+message PromoContentProto {
+  string image = 1;
+  string title = 2;
+  string message = 3;
+  string button_text = 4;
+}
+
+message GamificationContentProto {
+  string title = 1;
+  string message = 2;
+  string show_progress_bar = 3;
+}
+
+message ProgressiveFormContentProto {
+  repeated FormFieldProto fields = 1;
+}
+
+message FormFieldProto {
+  string field_key = 1;
+  string label = 2;
+  FormFieldTypeProto type = 3;
+  bool is_required = 4;
+}
+
+message GateContentProto {
+  string title = 1;
+  string message = 2;
+  repeated FormFieldProto required_fields = 3;
+}
+
+message UpdatedCampaignQuizSettingRequest {
+  string id = 1;
+  string quiz_id = 2;
+  bool is_active = 3;
+  int32 max_attempts = 4;
+  LeadCollectionPolicyProto lead_collection_policy = 5;
+  CheckpointConfigProto checkpoint_config = 6;
+}
+
+message CampaignQuizSettingMiniResponse {
+  string id = 1;
+  string quiz_id = 2;
+  bool is_active = 3;
+  int32 max_attempts = 4;
+}
+
+// CampaignQuizSetting
+
+//Quiz
+message CreatedQuizRequest {
+  string title = 1;
+  optional string description = 2;
+  optional string instruction = 3;
+  optional string image = 4;
+  QuizTypeProto type = 5;
+  optional string tenant = 6;
+  string estimate_time = 7;
+  QuizSourceProto source = 8;
+  repeated CreatedDimensionRequest dimensions = 9;
+  repeated CreatedQuestionRequest questions = 10;
+}
+
+message QuizMiniResponse {
+  string id = 1;
+  string code = 2;
+  string title = 3;
+  optional string description = 4;
+  optional string instruction = 5;
+  optional string image = 6;
+  QuizTypeProto type = 7;
+  string tenant = 8; 
+  optional string parent_id = 9;
+  QuizSourceProto source = 10;
+  string estimate_time = 11;
+  int32 submited_amount = 12;
+  google.protobuf.Timestamp created_at = 13;
+}
+
+message QuizResponse {
+  string id = 1;
+  string code = 2;
+  string title = 3;
+  optional string description = 4;
+  optional string instruction = 5;
+  optional string image = 6;
+  QuizTypeProto type = 7;
+  string tenant = 8; 
+  optional string parent_id = 9;
+  QuizSourceProto source = 10;
+  repeated DimensionMiniResponse dimensions = 11;
+  repeated QuestionMiniResponse questions = 12;
+  string estimate_time = 13;
+  int32 submited_amount = 14;
+  google.protobuf.Timestamp created_at = 15;
+  string created_by = 16;
+  optional google.protobuf.Timestamp last_modified_at = 17;
+  optional string last_modified_by = 18;
+}
+
+message UpdatedQuizRequest {
+  string id = 1;
+  string title = 2;
+  optional string description = 3;
+  optional string instruction = 4;
+  optional string image = 5;
+  string estimate_time = 6;
+}
+
+message GetQuizListRequest {
+  optional string code = 1;
+  optional string title = 2;
+  optional QuizTypeProto type = 3;
+  optional string tenant = 4;
+  repeated QuizSourceProto sources = 5;
+  optional string campaign_id = 6;
+  optional google.protobuf.Timestamp from_date = 7;
+  optional google.protobuf.Timestamp to_date = 8;
+  int32 page = 9;
+  int32 page_size = 10;
+}
+
+message PagedQuizMiniResponse {
+  repeated QuizMiniResponse data = 1;
+  int32 total_count = 2;
+  int32 page = 3;
+  int32 page_size = 4;
+}
+
+message GetQuizDetailRequest {
+  string id = 1;
+}
+
+message CloneQuizRequest {
+  string quiz_template_id = 1;
+  string tenant = 2;
+  string title = 3;
+  optional string description = 4;
+  optional string instruction = 5;
+  optional string image = 6;
+  string estimate_time = 7;
+}
+
+message DeepCopyQuizRequest {
+  string quiz_template_id = 1;
+  string tenant = 2;
+  string title = 3;
+  optional string description = 4;
+  optional string instruction = 5;
+  optional string image = 6;
+  string estimate_time = 7;
+}
+
+message GetQuizInCampaignDetailRequest {
+  string quiz_id = 1;
+  string campaign_id = 2;
+}
+
+message GetQuizInCampaignDetailResponse {
+  string id = 1;
+  string code = 2;
+  string title = 3;
+  optional string description = 4;
+  optional string instruction = 5;
+  optional string image = 6;
+  QuizTypeProto type = 7;
+  string tenant = 8; 
+  optional string parent_id = 9;
+  QuizSourceProto source = 10;
+  repeated DimensionMiniResponse dimensions = 11;
+  repeated QuestionMiniResponse questions = 12;
+  string estimate_time = 13;
+  int32 submited_amount = 14;
+  CampaignQuizSettingResponseProto quiz_setting = 15;
+  google.protobuf.Timestamp created_at = 16;
+  string created_by = 17;
+  optional google.protobuf.Timestamp last_modified_at = 18;
+  optional string last_modified_by = 19;
+}
+//Quiz
+
+//Dimension
+message CreatedDimensionRequest {
+  string temp_dim_id = 1;
+  string title = 2;
+  optional string description = 3;
+}
+
+message CreatedNewDimensionRequest {
+  string quiz_id = 1;
+  string title = 2;
+  optional string description = 3;
+}
+
+message DimensionMiniResponse {
+  string id = 1;
+  string title = 2;
+  optional string description = 3;
+}
+
+message UpdatedDimensionRequest {
+  optional string id = 1;
+  string title = 2;
+  optional string description = 3;
+}
+
+message UpdatedQuizDimensionRequest {
+  string id = 1;
+  string quiz_id = 2;
+  string title = 3;
+  optional string description = 4;
+}
+
+message SyncDimensionRequest {
+  string quiz_id = 1;
+  repeated UpdatedDimensionRequest dimensions = 2;
+}
+
+message GetDimensionDetailRequest {
+  string id = 1;
+}
+
+message DimensionResponse {
+  string id = 1;
+  string title = 2;
+  optional string description = 3;
+  google.protobuf.Timestamp created_at = 4;
+  string created_by =5;
+  optional google.protobuf.Timestamp last_modified_at = 6;
+  optional string last_modified_by = 7;
+}
+
+//Dimension
+
+//Question
+message CreatedQuestionRequest {
+  string content = 1;
+  int32 order = 2;
+  repeated CreatedAnswerRequest answers = 3;
+}
+
+message CreatedQuizQuestionRequest {
+  string content = 1;
+  string quiz_id = 2;
+  repeated CreatedQuizAnswerRequest answers = 3;
+}
+
+message QuestionMiniResponse {
+  string id = 1;
+  string content = 2;
+  int32 order = 3;
+  QuizTypeProto type = 4;
+  repeated AnswerMiniResponse answers = 5;
+}
+
+message UpdatedQuestionRequest {
+  optional string id = 1;
+  string content = 2;
+  int32 order = 3;
+  repeated UpdatedAnswerRequest answers = 4;
+}
+
+message QuestionSuccessResponse {
+  string id = 1;
+  string content = 2;
+  int32 order = 3;
+  QuizTypeProto type = 4;
+}
+
+message DeletedQuestionRequest {
+  string id = 1;
+}
+
+message GetQuestionDetailRequest {
+  string id = 1;
+}
+
+
+//Question
+
+//Answer
+message CreatedAnswerRequest {
+  string content = 1;
+  bool is_correct = 2;
+  string score = 3;
+  repeated CreatedDimensionScoreRequest dimension_scores = 4;
+}
+
+message CreatedQuizAnswerRequest {
+  string content = 1;
+  bool is_correct = 2;
+  string score = 3;
+  repeated CreatedQuizDimensionScoreRequest dimension_scores = 4;
+}
+
+message AnswerMiniResponse {
+  string id = 1;
+  string content = 2;
+  bool is_correct = 3;
+  string score = 4;
+  repeated DimensionScoreMiniResponse dimension_scores = 5;
+}
+
+message UpdatedAnswerRequest {
+  optional string id = 1;
+  string content = 2;
+  bool is_correct = 3;
+  string score = 4;
+  repeated UpdatedDimensionScoreRequest dimension_scores = 5;
+}
+
+//Answer
+
+//DimensionScore
+message CreatedDimensionScoreRequest {
+  string temp_dim_id = 1;
+  string score = 2;
+}
+
+message CreatedQuizDimensionScoreRequest {
+  string dimension_id = 1;
+  string score = 2;
+}
+
+message DimensionScoreMiniResponse {
+  string id = 1;
+  string dimension_id = 2;
+  string title = 3;
+  string score = 4;
+}
+
+message QuizDimensionMiniResponse {
+  string id = 1;
+  string title = 2;
+  optional string description = 3;
+  string quiz_id = 4;
+  string quiz_title = 5;
+}
+
+message UpdatedDimensionScoreRequest {
+  string dimension_id = 1;
+  string score = 2;
+}
+
+message GetQuizDimensionListRequest {
+  optional string title = 1;
+  string tenant = 2;
+  optional google.protobuf.Timestamp from_date = 3;
+  optional google.protobuf.Timestamp to_date = 4;
+  int32 page = 5;
+  int32 page_size = 6;
+}
+
+message PagedDimensionMiniResponse {
+   repeated QuizDimensionMiniResponse data = 1;
+   int32 total_count = 2;
+   int32 page = 3;
+   int32 page_size = 4;
+}
+
+//DimensionScore
+
+//QuizAttempt
+message CreateQuizAttemptRequest {
+  string campaign_quiz_setting_id = 1;
+  optional string user_id = 2;
+  optional string lead_id = 3;
+  optional string username = 4;
+  optional string tenant = 5;
+}
+
+message UpdateQuizAttemptRequest {
+  string id = 1;
+  string current_question_id = 2;
+  repeated UserAnswerRequest user_answers = 3;
+}
+
+message QuizAttemptMiniResponse {
+  string id = 1;
+  string campaign_quiz_setting_id = 2;
+  optional string user_id = 3;
+  optional string lead_id = 4;
+}
+
+message SubmitQuizAttemptRequest {
+  string quiz_attempt_id = 1;
+  repeated UserAnswerRequest user_answers = 2;
+}
+
+message UserAnswerRequest {
+  string question_id = 1;
+  string answer_id = 2;
+}
+
+message UserAnswerResponse {
+  string question_id = 1;
+  string answer_id = 2;
+}
+
+message GetQuizAttemptQueryRequest {
+  string campaign_quiz_setting_id = 1;
+  optional string user_id = 2;
+  optional string lead_id = 3;
+}
+
+message QuizAttemptResponse {
+  string id = 1;
+  string campaign_quiz_setting_id = 2;
+  optional string user_id = 3;
+  optional string lead_id = 4;
+  AttemptStatusProto attempt_status = 5;
+  google.protobuf.Timestamp started_at = 6;
+  optional google.protobuf.Timestamp completed_at = 7;
+  optional string current_question_id = 8;
+  repeated UserAnswerResponse user_answers = 9;
+  google.protobuf.Timestamp created_at = 10;
+  string created_by = 11;
+  optional google.protobuf.Timestamp last_modified_at = 12;
+  optional string last_modified_by = 13;
+}
+
+//QuizAttempt
+
+//QuizResult
+message QuizResultMiniResponse {
+  string id = 1;
+  string quiz_attempt_id = 2;
+  string total_score = 3;
+  repeated DimensionScoreResultProto dimension_score_results = 4;
+}
+
+message DimensionScoreResultProto {
+  string dimension_id = 1;
+  string dimension_title = 2;
+  string score = 3;
+}
+
+message GetQuizResultDetailRequest {
+  string id = 1;
+}
+
+message QuizResultResponse {
+  string id = 1;
+  string quiz_attempt_id = 2;
+  string total_score = 3;
+  repeated DimensionScoreResultProto dimension_score_results = 4;
+  optional string lead_id = 5;
+  optional string user_id = 6;
+  string quiz_id = 7;
+  string quiz_title = 8;
+  google.protobuf.Timestamp created_at = 9;
+  string created_by = 10;
+  optional google.protobuf.Timestamp last_modified_at = 11;
+  optional string last_modified_by = 12;
+}
+
+message GetQuizResultListRequest {
+  optional string user_id = 1;
+  optional string lead_id = 2;
+  optional string quiz_id = 3;
+  optional string campaign_id = 4;
+  string tenant = 5;
+  optional google.protobuf.Timestamp from_date = 6;
+  optional google.protobuf.Timestamp to_date = 7;
+  int32 page = 8;
+  int32 page_size = 9;
+}
+
+message CampaignQuizResultResponse {
+  string id = 1;
+  optional string lead_name = 2;
+  optional string username = 3;
+  string quiz_attempt_id = 4;
+  string campaign_name = 5;
+  string quiz_title = 6;
+  string total_score = 7;
+  string tenant = 8;
+  repeated DimensionScoreResultProto dimension_score_results = 9;
+  google.protobuf.Timestamp created_at = 10;
+}
+
+message PagedCampaignQuizResultResponse {
+  repeated CampaignQuizResultResponse data = 1;
+  int32 total_count = 2;
+  int32 page = 3;
+  int32 page_size = 4;
+}
+//QuizResult
+
+// Lead
+message UpdateLeadRequest {
+  string lead_id = 1;
+  optional string full_name = 2;
+  optional string phone_number = 3;
+  optional string email = 4;
+  optional string school_name = 5;
+  optional string avatar = 6;
+  optional string referral_code = 7;
+  optional string tenant = 8;
+  optional string customer_id = 9;
+  LeadStatusProto status = 10;
+  optional string note = 11;
+}
+
+message LeadMiniResponse {
+  string id = 1;
+  string lead_id = 2;
+  bool is_active = 3;
+  optional string linked_user_id = 4;
+  optional string full_name = 5;
+  optional string phone_number = 6;
+  optional string email = 7;
+  optional string school_name = 8;
+  optional string avatar = 9;
+  google.protobuf.Timestamp created_at = 10;
+  optional string referral_code = 11;
+  optional string tenant = 12;
+  optional string customer_id = 13;
+  LeadStatusProto status = 14;
+  optional string note = 15;
+  double total_score = 16;
+}
+
+message GetLeadDetailRequest {
+  string lead_id = 1;
+}
+
+message LeadResponse {
+  string id = 1;
+  string lead_id = 2;
+  bool is_active = 3;
+  optional string linked_user_id = 4;
+  optional string full_name = 5;
+  optional string phone_number = 6;
+  optional string email = 7;
+  optional string school_name = 8;
+  optional string avatar = 9;
+  google.protobuf.Timestamp created_at = 10;
+  string created_by = 11;
+  optional google.protobuf.Timestamp last_modified_at = 12;
+  optional string last_modified_by = 13;
+  optional string referral_code = 14;
+  optional string tenant = 15;
+  optional string customer_id = 16;
+  LeadStatusProto status = 17;
+  optional string note = 18;
+  double total_score = 19;
+}
+
+message GetLeadListRequest {
+  optional string key = 1;
+  optional google.protobuf.Timestamp from_date = 2;
+  optional google.protobuf.Timestamp to_date = 3;
+  int32 page = 4;
+  int32 page_size = 5;
+  optional string referral_code = 6;
+  optional string tenant = 7;
+  optional string customer_id = 8;
+  bool sort_by_score = 9;
+  bool is_top_leads = 10;
+}
+
+message PagedLeadMiniResponse {
+  repeated LeadMiniResponse data = 1;
+  int32 total_count = 2;
+  int32 page = 3;
+  int32 page_size = 4;
+}
+// Lead Interaction & Scoring
+message LogInteractionRequest {
+  string lead_id = 1;
+  string tenant = 2;
+  optional string quiz_attempt_id = 3;
+  string event_type = 4;
+  optional string target_id = 5;
+  double value = 6;
+  string description = 7;
+}
+
+message GetLeadEngagementRequest {
+  string lead_id = 1;
+}
+
+message LeadEngagementResponse {
+  string lead_id = 1;
+  double overall_engagement_score = 2;
+  google.protobuf.Timestamp last_calculated_at = 3;
+  repeated InterestAffinityProto interest_affinities = 4;
+}
+
+message InterestAffinityProto {
+  string dimension_id = 1;
+  double score = 2;
+}
+
+message UpdateScoringRuleRequest {
+  string tenant = 1;
+  string rule_key = 2;
+  double points = 3;
+  bool is_active = 4;
+  string description = 5;
+}
+
+message ScoringRuleResponse {
+  string id = 1;
+  string tenant = 2;
+  string rule_key = 3;
+  double points = 4;
+  bool is_active = 5;
+  string description = 6;
+}
+
+message GetScoringRulesRequest {
+  string tenant = 1;
+}
+
+message ScoringRulesResponse {
+  repeated ScoringRuleResponse rules = 1;
+}
+
+message GetLeadInteractionsRequest {
+  string lead_id = 1;
+  int32 page = 2;
+  int32 page_size = 3;
+}
+
+message InteractionLogMiniResponse {
+  string id = 1;
+  string lead_id = 2;
+  string tenant = 3;
+  optional string quiz_attempt_id = 4;
+  string event_type = 5;
+  optional string target_id = 6;
+  double value = 7;
+  string description = 8;
+  google.protobuf.Timestamp created_at = 9;
+  double score = 10;
+}
+
+message PagedInteractionLogMiniResponse {
+  repeated InteractionLogMiniResponse data = 1;
+  int32 total_count = 2;
+  int32 page = 3;
+  int32 page_size = 4;
+}
+// Lead Interaction & Scoring
+
+// Recommendation
+message GetRecommendationsRequest {
+  string tenant = 1;
+  optional RecommendationTypeProto type = 2;
+}
+
+message GetRecommendationListRequest {
+  optional string title = 1;
+  optional RecommendationTypeProto type = 2;
+  string tenant = 3;
+  google.protobuf.BoolValue is_active = 4;
+  optional string campaign_id = 5;
+  optional string quiz_id = 6;
+  optional string dimension_id = 7;
+  optional google.protobuf.Timestamp from_date = 8;
+  optional google.protobuf.Timestamp to_date = 9;
+  int32 page = 10;
+  int32 page_size = 11;
+}
+
+message RecommendationMiniResponse {
+  string id = 1;
+  string tenant = 2;
+  RecommendationTypeProto type = 3;
+  string title = 4;
+  string description = 5;
+  int32 order = 6;
+  google.protobuf.Timestamp created_at = 7;
+}
+
+message PagedRecommendationMiniResponse {
+   repeated RecommendationMiniResponse data = 1;
+   int32 total_count = 2;
+   int32 page = 3;
+   int32 page_size = 4;
+}
+
+message RecommendationProto {
+  string id = 1;
+  string tenant = 2;
+  RecommendationTypeProto type = 3;
+  string title = 4;
+  string description = 5;
+  optional string image = 6;
+  optional string cta_text = 7;
+  string json_content = 8;
+  int32 order = 9;
+  optional string campaign_id = 10;
+  optional string quiz_id = 11;
+  optional string dimension_id = 12;
+}
+
+message RecommendationsResponse {
+  repeated RecommendationProto data = 1;
+}
+
+message GetRecommendationDetailRequest {
+  string id = 1;
+}
+
+message CreateRecommendationRequest {
+  string tenant = 1;
+  RecommendationTypeProto type = 2;
+  string title = 3;
+  string description = 4;
+  optional string image = 5;
+  optional string cta_text = 6;
+  string json_content = 7;
+  int32 order = 8;
+  optional string campaign_id = 9;
+  optional string quiz_id = 10;
+  optional string dimension_id = 11;
+}
+
+message UpdateRecommendationRequest {
+  string id = 1;
+  string tenant = 2;
+  RecommendationTypeProto type = 3;
+  string title = 4;
+  string description = 5;
+  optional string image = 6;
+  optional string cta_text = 7;
+  string json_content = 8;
+  int32 order = 9;
+  optional string campaign_id = 10;
+  optional string quiz_id = 11;
+  optional string dimension_id = 12;
+}
+
+message DeleteRecommendationRequest {
+  string id = 1;
+}
+
+//ScoringRule
+message CreatedScoringRuleRequest {
+  string tenant = 1;
+  string rule_key = 2;
+  optional string description = 3;
+  double points = 4;
+  bool is_active = 5;
+}
+
+message UpdatedScoringRuleRequest {
+  string id = 1;
+  string tenant = 2;
+  string rule_key = 3;
+  optional string description = 4;
+  double points = 5;
+  bool is_active = 6;
+}
+
+message ScoringRuleMiniResponse {
+  string id = 1;
+  string tenant = 2;
+  string rule_key = 3;
+  optional string description = 4;
+  double points = 5;
+  bool is_active = 6 ;
+  google.protobuf.Timestamp created_at = 7;
+}
+
+message GetScoringRuleDetailRequest {
+  string id = 1;
+}
+
+message ScoringRuleDetailResponse {
+  string id = 1;
+  string tenant = 2;
+  string rule_key = 3;
+  optional string description = 4;
+  double points = 5;
+  bool is_active = 6 ;
+  google.protobuf.Timestamp created_at = 7;
+  string created_by = 8;
+  optional google.protobuf.Timestamp last_modified_at = 9;
+  optional string last_modified_by = 10;
+}
+
+message DeleteScoringRuleRequest {
+  string id = 1;
+}
+
+message GetScoringRuleListRequest {
+  optional string rule_key = 1;
+  google.protobuf.BoolValue is_active = 2 ;
+  string tenant = 3;
+  optional google.protobuf.Timestamp from_date = 8;
+  optional google.protobuf.Timestamp to_date = 9;
+  int32 page = 10;
+  int32 page_size = 11;
+}
+
+message PagedScoringRuleMiniResponse {
+   repeated ScoringRuleMiniResponse data = 1;
+   int32 total_count = 2;
+   int32 page = 3;
+   int32 page_size = 4;
+}
+
+//enum // chuẩn của proto, các giá trị là uppercase, tên enum viết PascalCase
+enum CampaignStatusProto {
+  CAMPAIGN_STATUS_UNKNOWN = 0;
+  CAMPAIGN_STATUS_INACTIVE = 1;
+  CAMPAIGN_STATUS_ACTIVE = 2;
+}
+
+enum QuizTypeProto {
+  QUIZ_TYPE_UNKNOWN = 0;
+  QUIZ_TYPE_GRADED = 1;
+  QUIZ_TYPE_DIMENSION = 2;
+}
+
+enum QuizSourceProto {
+  QUIZ_SOURCE_UNKNOWN = 0;
+  QUIZ_SOURCE_TEMPLATE = 1;
+  QUIZ_SOURCE_DEEPCOPY = 2;
+  QUIZ_SOURCE_REFFERENCE = 3;
+}
+
+enum LeadFieldProto
+{
+    LEAD_FIELD_UNKNOWN = 0;
+    LEAD_FIELD_FULLNAME = 1;
+    LEAD_FIELD_EMAIL = 2;
+    LEAD_FIELD_PHONE = 3;
+    LEAD_FIELD_INDUSTRY = 4;
+    LEAD_FIELD_UNIVERSITY = 5;
+}
+
+enum FormFieldTypeProto
+{
+    FORM_FIELD_TYPE_UNKNOWN = 0;
+    FORM_FIELD_TYPE_TEXT = 1;
+    FORM_FIELD_TYPE_EMAIL = 2;
+    FORM_FIELD_TYPE_PHONE = 3;
+    FORM_FIELD_TYPE_SELECT = 4;
+}
+
+enum CheckpointContentTypeProto
+{
+    CHECKPOINT_CONTENT_TYPE_UNKNOWN = 0;
+    CHECKPOINT_CONTENT_TYPE_PROMO = 1;
+    CHECKPOINT_CONTENT_TYPE_GAMIFICATION = 2;
+    CHECKPOINT_CONTENT_TYPE_PROGRESSIVE_FORM = 3;
+    CHECKPOINT_CONTENT_TYPE_GATE = 4;
+}
+
+enum CheckpointTriggerTypeProto
+{
+    CHECKPOINT_TRIGGER_TYPE_UNKNOWN = 0;
+    CHECKPOINT_TRIGGER_TYPE_AT_QUESTION_NUMBER = 1;
+    CHECKPOINT_TRIGGER_TYPE_EVERY_X_QUESTIONS = 2;
+    CHECKPOINT_TRIGGER_TYPE_AT_PROGRESS_PERCENT = 3;
+    CHECKPOINT_TRIGGER_TYPE_BEFORE_RESULT = 4;
+}
+
+enum AttemptStatusProto {
+  ATTEMPT_STATUS_UNKNOWN = 0;
+  ATTEMPT_STATUS_INPROGRESS = 1;
+  CAMPAIGN_STATUS_COMPLETED = 2;
+}
+
+enum LeadStatusProto {
+  LEAD_STATUS_NEW = 0;
+  LEAD_STATUS_CONTACTED = 1;
+  LEAD_STATUS_TESTING = 2;
+  LEAD_STATUS_QUALIFIED = 3;
+  LEAD_STATUS_UNQUALIFIED = 4;
+  LEAD_STATUS_LOST = 5;
+  LEAD_STATUS_INTERESTED = 6;
+  LEAD_STATUS_CONVERTED = 7;
+}
+
+enum RecommendationTypeProto {
+  RECOMMENDATION_TYPE_UNKNOWN = 0;
+  RECOMMENDATION_TYPE_CAREER = 1;
+  RECOMMENDATION_TYPE_SCHOLARSHIP = 2;
+  RECOMMENDATION_TYPE_COURSE = 3;
+}
+//enum
